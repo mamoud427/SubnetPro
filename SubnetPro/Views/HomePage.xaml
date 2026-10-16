@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SubnetPro.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SubnetPro.Controls"
+    xmlns:vm="clr-namespace:SubnetPro.ViewModels"
+    x:DataType="vm:HomeViewModel"
+    Title="Accueil">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16,8,16,24" Spacing="16">
+
+            <controls:AppHeader Title="SubnetPro" />
+
+            <VerticalStackLayout Spacing="2">
+                <Label Style="{StaticResource Heading}" Text="{Binding UserName, StringFormat='Bienvenue, {0}'}" />
+                <Label Style="{StaticResource Subtitle}" Text="Vos outils IPv4, sans connexion internet." />
+            </VerticalStackLayout>
+
+            <Label Style="{StaticResource SectionLabel}" Text="Outils réseau" />
+
+            <Grid
+                ColumnDefinitions="*,*"
+                ColumnSpacing="12"
+                RowDefinitions="Auto,Auto"
+                RowSpacing="12">
+
+                <controls:ToolCard
+                    Title="Sous-réseau"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    IconSource="ic_subnet.png"
+                    Subtitle="Masque, adresses et hôtes disponibles."
+                    TapCommand="{Binding OpenSubnetCommand}" />
+
+                <controls:ToolCard
+                    Title="VLSM"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    IconSource="ic_vlsm.png"
+                    Subtitle="Répartir un réseau selon vos besoins."
+                    TapCommand="{Binding OpenVlsmCommand}" />
+
+                <controls:ToolCard
+                    Title="Classe &amp; conversion"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    IconSource="ic_classe.png"
+                    Subtitle="Classe IPv4, binaire et décimal."
+                    TapCommand="{Binding OpenClasseCommand}" />
+
+                <controls:ToolCard
+                    Title="Historique"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    IconSource="ic_history.png"
+                    Subtitle="Retrouver les calculs enregistrés."
+                    TapCommand="{Binding OpenHistoryCommand}" />
+            </Grid>
+
+            <Label Style="{StaticResource SectionLabel}" Text="Dernier calcul enregistré" />
+
+            <Border Style="{StaticResource Card}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenHistoryCommand}" />
+                </Border.GestureRecognizers>
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            FontFamily="OpenSansSemibold"
+                            FontSize="14"
+                            Text="{Binding LastCalculationTitle}" />
+                        <Label Style="{StaticResource Caption}" Text="{Binding LastCalculationInfo}" />
+                    </VerticalStackLayout>
+                    <Label
+                        Grid.Column="1"
+                        FontSize="22"
+                        Text="›"
+                        TextColor="{StaticResource Muted}"
+                        VerticalOptions="Center" />
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

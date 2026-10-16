@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Name="root"
+    x:Class="SubnetPro.Controls.AppHeader"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SubnetPro.Controls">
+
+    <Grid
+        x:DataType="controls:AppHeader"
+        BindingContext="{x:Reference root}"
+        ColumnDefinitions="*,Auto"
+        Padding="0,4,0,8">
+        <Label
+            FontFamily="OpenSansSemibold"
+            FontSize="15"
+            Text="{Binding Title}"
+            VerticalOptions="Center" />
+        <controls:OfflineBadge Grid.Column="1" />
+    </Grid>
+</ContentView>
