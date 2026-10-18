@@ -4,10 +4,153 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SubnetPro.Controls"
+    xmlns:fmt="clr-namespace:SubnetPro.Core.Formatting;assembly=SubnetPro.Core"
+    xmlns:vm="clr-namespace:SubnetPro.ViewModels"
+    x:DataType="vm:ClassConversionViewModel"
     Title="Classe &amp; conversion">
 
-    <VerticalStackLayout Padding="16,8" Spacing="12">
-        <controls:AppHeader Title="Classe &amp; conversion" />
-        <Label Style="{StaticResource Subtitle}" Text="Écran en construction (jour 3)." />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="16,8,16,24" Spacing="14">
+
+            <controls:AppHeader Title="Classe &amp; conversion" />
+
+            <!-- Identification de la classe -->
+            <VerticalStackLayout Spacing="4">
+                <Label Style="{StaticResource Caption}" Text="Adresse IPv4 à identifier" />
+                <Border Style="{StaticResource Field}">
+                    <Entry
+                        IsSpellCheckEnabled="False"
+                        IsTextPredictionEnabled="False"
+                        Keyboard="Text"
+                        Placeholder="192.168.10.34"
+                        Text="{Binding Address}"
+                        VerticalOptions="Center" />
+                </Border>
+                <Label
+                    IsVisible="{Binding HasAddressError}"
+                    Style="{StaticResource Caption}"
+                    Text="{Binding AddressError}"
+                    TextColor="{StaticResource Danger}" />
+            </VerticalStackLayout>
+
+            <Border IsVisible="{Binding HasClass}" Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+
+                    <VerticalStackLayout Spacing="2">
+                        <Label
+                            FontFamily="OpenSansSemibold"
+                            FontSize="15"
+                            Text="{Binding ClassTitle}"
+                            TextColor="{StaticResource Primary}" />
+                        <Label
+                            IsVisible="{Binding HasClassNote}"
+                            Style="{StaticResource Caption}"
+                            Text="{Binding ClassNote}" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="60,*,*" Padding="8,0">
+                        <Label Style="{StaticResource Caption}" Text="Classe" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource Caption}"
+                            Text="Premier octet" />
+                        <Label
+                            Grid.Column="2"
+                            Style="{StaticResource Caption}"
+                            Text="Usage" />
+                    </Grid>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding ClassRows}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="fmt:ClassTableRow">
+                                <Grid ColumnDefinitions="60,*,*" Padding="8,6">
+                                    <Grid.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsCurrent}"
+                                            TargetType="Grid"
+                                            Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource PrimarySoft}" />
+                                        </DataTrigger>
+                                    </Grid.Triggers>
+                                    <Label FontFamily="OpenSansSemibold" Text="{Binding Letter}" />
+                                    <Label Grid.Column="1" Text="{Binding FirstOctetRange}" />
+                                    <Label Grid.Column="2" Text="{Binding Usage}" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <Label
+                        Style="{StaticResource Caption}"
+                        Text="0 et 127 : usages spéciaux. En pratique, le préfixe CIDR définit le réseau." />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Conversion binaire / décimal -->
+            <Label Style="{StaticResource SectionLabel}" Text="Binaire ↔ décimal" />
+            <Label
+                Style="{StaticResource Subtitle}"
+                Text="Modifiez un octet (0–255) ou ses 8 bits pour obtenir l'autre valeur." />
+
+            <Grid
+                ColumnDefinitions="*,2*"
+                ColumnSpacing="10"
+                RowDefinitions="Auto,Auto"
+                RowSpacing="4">
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Style="{StaticResource Caption}"
+                    Text="Décimal" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Style="{StaticResource Caption}"
+                    Text="Binaire" />
+
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Style="{StaticResource Field}">
+                    <Entry
+                        Keyboard="Numeric"
+                        MaxLength="3"
+                        Placeholder="192"
+                        Text="{Binding DecimalText}"
+                        VerticalOptions="Center" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Style="{StaticResource Field}">
+                    <Entry
+                        Keyboard="Numeric"
+                        MaxLength="8"
+                        Placeholder="11000000"
+                        ReturnCommand="{Binding ConvertValueCommand}"
+                        ReturnType="Done"
+                        Text="{Binding BinaryText}"
+                        VerticalOptions="Center" />
+                </Border>
+            </Grid>
+
+            <Button Command="{Binding ConvertValueCommand}" Text="Convertir" />
+
+            <Label
+                IsVisible="{Binding HasConversionError}"
+                Style="{StaticResource Caption}"
+                Text="{Binding ConversionError}"
+                TextColor="{StaticResource Danger}" />
+            <Label
+                FontFamily="OpenSansSemibold"
+                FontSize="16"
+                IsVisible="{Binding HasConversionResult}"
+                Text="{Binding ConversionResult}" />
+
+            <Label
+                Style="{StaticResource Caption}"
+                Text="Identification et conversions calculées localement." />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
