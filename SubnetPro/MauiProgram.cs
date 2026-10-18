@@ -21,6 +21,9 @@ public static class MauiProgram
         builder.Services.AddTransient<HomeViewModel>();
         builder.Services.AddTransient<HomePage>();
 
+        builder.Services.AddTransient<SubnetViewModel>();
+        builder.Services.AddTransient<SubnetPage>();
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
