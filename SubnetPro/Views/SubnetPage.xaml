@@ -128,6 +128,8 @@
                         </BindableLayout.ItemTemplate>
                     </FlexLayout>
 
+                    <Button Command="{Binding ShowDetailCommand}" Text="Voir le détail et enregistrer" />
+
                     <Button
                         Command="{Binding CopyCommand}"
                         Style="{StaticResource OutlineButton}"

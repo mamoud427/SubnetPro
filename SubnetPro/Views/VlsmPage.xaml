@@ -145,6 +145,8 @@
                         TextColor="{StaticResource Danger}" />
                     <Label Style="{StaticResource Caption}" Text="{Binding Summary}" />
 
+                    <Button Command="{Binding ShowDetailCommand}" Text="Voir le détail et enregistrer" />
+
                     <Button
                         Command="{Binding CopyCommand}"
                         Style="{StaticResource OutlineButton}"

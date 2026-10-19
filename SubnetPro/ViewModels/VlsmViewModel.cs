@@ -1,19 +1,20 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.ApplicationModel.DataTransfer;
-using Org.W3c.Dom;
 using SubnetPro.Core;
 using SubnetPro.Core.Calculators;
 using SubnetPro.Core.Formatting;
+using SubnetPro.Core.History;
 using SubnetPro.Core.Models;
-using System.Collections.ObjectModel;
-using static Android.InputMethodServices.Keyboard;
+using SubnetPro.Helpers;
 
 namespace SubnetPro.ViewModels;
 
 public partial class VlsmViewModel : BaseViewModel
 {
     private VlsmResult? lastResult;
+    private HistoryEntry? currentEntry;
 
     // ----- Saisie -----
 
@@ -131,11 +132,23 @@ public partial class VlsmViewModel : BaseViewModel
 
         var result = VlsmCalculator.Allocate(address, cidr, requirements);
         lastResult = result;
+        currentEntry = HistoryFactory.FromVlsm(address, cidr, requirements, DateTime.Now);
 
         Rows = VlsmFormatter.ToRows(result);
         Summary = VlsmFormatter.Summary(result);
         Warning = VlsmFormatter.UnallocatedWarning(result);
         HasResult = true;
+    }
+
+    [RelayCommand]
+    private Task ShowDetailAsync()
+    {
+        if (currentEntry is null)
+            return Task.CompletedTask;
+
+        return Shell.Current.GoToAsync(
+            Routes.Result,
+            new ShellNavigationQueryParameters { { "entry", currentEntry } });
     }
 
     [RelayCommand]

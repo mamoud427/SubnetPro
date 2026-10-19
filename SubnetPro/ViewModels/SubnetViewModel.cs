@@ -1,17 +1,21 @@
-﻿using Android.Locations;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.ApplicationModel.DataTransfer;
 using SubnetPro.Core;
 using SubnetPro.Core.Calculators;
 using SubnetPro.Core.Formatting;
+using SubnetPro.Core.History;
 using SubnetPro.Core.Models;
+using SubnetPro.Helpers;
 
 namespace SubnetPro.ViewModels;
 
 public partial class SubnetViewModel : BaseViewModel
 {
     private const string DefaultCidr = "24";
+
+    // Entrée d'historique du dernier calcul (même identifiant tant que le résultat ne change pas).
+    private HistoryEntry? currentEntry;
 
     // ----- Saisie -----
 
@@ -88,6 +92,7 @@ public partial class SubnetViewModel : BaseViewModel
         var computed = SubnetCalculator.Calculate(Address.Trim(), cidr);
 
         Result = computed;
+        currentEntry = HistoryFactory.FromSubnet(computed, DateTime.Now);
         ResultTitle = computed.NetworkCidr;
         ClassLabel = ResultFormatter.ClassLabel(computed.Class);
         ResultItems = ResultFormatter.ToItems(computed);
@@ -100,10 +105,22 @@ public partial class SubnetViewModel : BaseViewModel
         Address = string.Empty;
         CidrText = DefaultCidr;
         Result = null;
+        currentEntry = null;
         ResultItems = Array.Empty<ResultItem>();
         ResultTitle = string.Empty;
         ClassLabel = string.Empty;
         StatusMessage = null;
+    }
+
+    [RelayCommand]
+    private Task ShowDetailAsync()
+    {
+        if (currentEntry is null)
+            return Task.CompletedTask;
+
+        return Shell.Current.GoToAsync(
+            Routes.Result,
+            new ShellNavigationQueryParameters { { "entry", currentEntry } });
     }
 
     [RelayCommand]

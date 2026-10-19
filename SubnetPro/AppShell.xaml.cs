@@ -1,10 +1,15 @@
-﻿namespace SubnetPro
+﻿using SubnetPro.Helpers;
+using SubnetPro.Views;
+
+namespace SubnetPro;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+
+        // Pages poussées au-dessus des onglets (les onglets sont déclarés dans AppShell.xaml).
+        Routing.RegisterRoute(Routes.Result, typeof(ResultDetailPage));
     }
 }

@@ -4,10 +4,104 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:SubnetPro.Controls"
+    xmlns:vm="clr-namespace:SubnetPro.ViewModels"
+    x:DataType="vm:HistoryViewModel"
     Title="Historique">
 
-    <VerticalStackLayout Padding="16,8" Spacing="12">
-        <controls:AppHeader Title="Historique" />
-        <Label Style="{StaticResource Subtitle}" Text="Écran en construction (jour 4)." />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="16,8,16,24" Spacing="14">
+
+            <controls:AppHeader Title="Historique" />
+
+            <!-- Recherche -->
+            <Border Style="{StaticResource Field}">
+                <Entry
+                    IsSpellCheckEnabled="False"
+                    IsTextPredictionEnabled="False"
+                    Placeholder="Rechercher une adresse ou un outil"
+                    Text="{Binding SearchText}"
+                    VerticalOptions="Center" />
+            </Border>
+
+            <!-- Filtre par outil et nombre de calculs -->
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <Border Style="{StaticResource Field}">
+                    <Picker
+                        FontSize="13"
+                        ItemsSource="{Binding Filters}"
+                        SelectedItem="{Binding SelectedFilter}"
+                        TextColor="{StaticResource Ink}"
+                        VerticalOptions="Center" />
+                </Border>
+                <Label
+                    Grid.Column="1"
+                    Style="{StaticResource Caption}"
+                    Text="{Binding CountText}"
+                    VerticalOptions="Center" />
+            </Grid>
+
+            <!-- Liste groupée -->
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Groups}" Spacing="16">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:HistoryGroupViewModel">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Style="{StaticResource SectionLabel}" Text="{Binding Title}" />
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Items}" Spacing="8">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:HistoryItemViewModel">
+                                        <Border Padding="12" Style="{StaticResource Card}">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding OpenCommand}" />
+                                            </Border.GestureRecognizers>
+
+                                            <Grid ColumnDefinitions="*,Auto,40" ColumnSpacing="8">
+                                                <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                                    <Label
+                                                        FontFamily="OpenSansSemibold"
+                                                        FontSize="14"
+                                                        Text="{Binding Title}" />
+                                                    <Label Style="{StaticResource Caption}" Text="{Binding Subtitle}" />
+                                                    <Label Style="{StaticResource Caption}" Text="{Binding Summary}" />
+                                                </VerticalStackLayout>
+
+                                                <Label
+                                                    Grid.Column="1"
+                                                    FontSize="22"
+                                                    Text="›"
+                                                    TextColor="{StaticResource Muted}"
+                                                    VerticalOptions="Center" />
+
+                                                <ImageButton
+                                                    Grid.Column="2"
+                                                    Command="{Binding DeleteCommand}"
+                                                    HeightRequest="36"
+                                                    Padding="8"
+                                                    Source="ic_trash.png"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="36" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+            <!-- État vide -->
+            <Label
+                HorizontalTextAlignment="Center"
+                IsVisible="{Binding IsEmpty}"
+                Margin="0,24"
+                Style="{StaticResource Subtitle}"
+                Text="{Binding EmptyMessage}" />
+
+            <Label
+                Style="{StaticResource Caption}"
+                Text="Historique conservé sur cet appareil uniquement. La corbeille supprime un calcul." />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
