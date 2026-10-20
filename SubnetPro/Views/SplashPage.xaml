@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SubnetPro.Views.SplashPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="{StaticResource Surface}"
+    Shell.NavBarIsVisible="False">
+
+    <Grid Padding="24" RowDefinitions="*,Auto">
+
+        <HorizontalStackLayout
+            HorizontalOptions="Center"
+            Spacing="12"
+            VerticalOptions="Center">
+            <Image
+                HeightRequest="48"
+                Source="logo_subnetpro.png"
+                WidthRequest="48" />
+            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                <Label
+                    FontFamily="OpenSansSemibold"
+                    FontSize="26"
+                    Text="SubnetPro" />
+                <Label Style="{StaticResource Caption}" Text="Boîte à outils réseau hors ligne" />
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+
+        <VerticalStackLayout
+            Grid.Row="1"
+            Padding="0,0,0,24"
+            HorizontalOptions="Center"
+            Spacing="8">
+            <ActivityIndicator
+                HeightRequest="24"
+                IsRunning="True"
+                WidthRequest="24" />
+            <Label Style="{StaticResource Caption}" Text="Veuillez patienter, chargement…" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
+using SubnetPro.Core.Accounts;
+using SubnetPro.Core.Data;
 using SubnetPro.Core.History;
+using SubnetPro.Services;
 using SubnetPro.ViewModels;
 using SubnetPro.Views;
 #if ANDROID
@@ -32,10 +36,31 @@ public static class MauiProgram
                 Android.Content.Res.ColorStateList.ValueOf(Colors.Transparent.ToPlatform()));
 #endif
 
-        // Données : version en mémoire (jour 4). Le jour 5 la remplace par SQLite.
-        builder.Services.AddSingleton<IHistoryRepository, InMemoryHistoryRepository>();
+        // Données : SQLite, dans le dossier privé de l'application (conservé entre les lancements).
+        builder.Services.AddSingleton(_ =>
+            new AppDatabase(Path.Combine(FileSystem.AppDataDirectory, "subnetpro.db3")));
+
+        // Comptes locaux et session (le hachage PBKDF2 est dans PasswordHasher).
+        builder.Services.AddSingleton(new PasswordHasher());
+        builder.Services.AddSingleton<IAccountRepository, SqliteAccountRepository>();
+        builder.Services.AddSingleton<AuthService>();
+        builder.Services.AddSingleton<SessionService>();
+        builder.Services.AddSingleton<ISessionService>(sp => sp.GetRequiredService<SessionService>());
+        builder.Services.AddSingleton<IUserContext>(sp => sp.GetRequiredService<SessionService>());
+
+        // L'historique est filtré par utilisateur grâce à IUserContext.
+        builder.Services.AddSingleton<IHistoryRepository, SqliteHistoryRepository>();
 
         // Pages et ViewModels : chaque nouvelle page avec ViewModel s'enregistre ici.
+        builder.Services.AddTransient<SplashViewModel>();
+        builder.Services.AddTransient<SplashPage>();
+
+        builder.Services.AddTransient<LoginViewModel>();
+        builder.Services.AddTransient<LoginPage>();
+
+        builder.Services.AddTransient<RegisterViewModel>();
+        builder.Services.AddTransient<RegisterPage>();
+
         builder.Services.AddTransient<HomeViewModel>();
         builder.Services.AddTransient<HomePage>();
 

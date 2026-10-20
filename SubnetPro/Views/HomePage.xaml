@@ -13,10 +13,21 @@
 
             <controls:AppHeader Title="SubnetPro" />
 
-            <VerticalStackLayout Spacing="2">
-                <Label Style="{StaticResource Heading}" Text="{Binding UserName, StringFormat='Bienvenue, {0}'}" />
-                <Label Style="{StaticResource Subtitle}" Text="Vos outils IPv4, sans connexion internet." />
-            </VerticalStackLayout>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <VerticalStackLayout Spacing="2">
+                    <Label Style="{StaticResource Heading}" Text="{Binding UserName, StringFormat='Bienvenue, {0}'}" />
+                    <Label Style="{StaticResource Subtitle}" Text="Vos outils IPv4, sans connexion internet." />
+                </VerticalStackLayout>
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding LogoutCommand}"
+                    FontSize="12"
+                    HeightRequest="36"
+                    Padding="12,0"
+                    Style="{StaticResource OutlineButton}"
+                    Text="Déconnexion"
+                    VerticalOptions="Start" />
+            </Grid>
 
             <Label Style="{StaticResource SectionLabel}" Text="Outils réseau" />
 

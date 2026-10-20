@@ -9,7 +9,17 @@
     Shell.NavBarIsVisible="False">
 
     <!-- Les Route doivent correspondre à Helpers/Routes.cs.
-         Le flux Splash -> Connexion -> Inscription sera ajouté au jour 6. -->
+         Le premier élément est affiché au lancement : Splash, qui redirige vers l'accueil ou la connexion. -->
+    <ShellContent
+        ContentTemplate="{DataTemplate views:SplashPage}"
+        Route="splash" />
+    <ShellContent
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="login" />
+    <ShellContent
+        ContentTemplate="{DataTemplate views:RegisterPage}"
+        Route="register" />
+
     <TabBar>
         <ShellContent
             Title="Accueil"

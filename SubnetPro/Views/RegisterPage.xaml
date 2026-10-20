@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SubnetPro.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:SubnetPro.Controls"
+    xmlns:vm="clr-namespace:SubnetPro.ViewModels"
+    x:DataType="vm:RegisterViewModel"
+    BackgroundColor="{StaticResource Surface}"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16,20,24" Spacing="14">
+
+            <!-- En-tête avec retour vers la connexion -->
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                <ImageButton
+                    Command="{Binding GoToLoginCommand}"
+                    HeightRequest="32"
+                    Padding="4"
+                    Source="ic_back.png"
+                    VerticalOptions="Center"
+                    WidthRequest="32" />
+                <Label
+                    Grid.Column="1"
+                    FontFamily="OpenSansSemibold"
+                    FontSize="15"
+                    Text="SubnetPro"
+                    VerticalOptions="Center" />
+                <controls:OfflineBadge Grid.Column="2" />
+            </Grid>
+
+            <Label Margin="0,8,0,0" Style="{StaticResource Heading}" Text="Inscription" />
+
+            <!-- Nom -->
+            <VerticalStackLayout Spacing="4">
+                <Label Style="{StaticResource SectionLabel}" Text="Nom" />
+                <Border Style="{StaticResource Field}">
+                    <Entry
+                        IsSpellCheckEnabled="False"
+                        Keyboard="Text"
+                        Placeholder="Votre nom"
+                        ReturnType="Next"
+                        Text="{Binding Name}"
+                        VerticalOptions="Center" />
+                </Border>
+                <Label
+                    IsVisible="{Binding HasNameError}"
+                    Style="{StaticResource Caption}"
+                    Text="{Binding NameError}"
+                    TextColor="{StaticResource Danger}" />
+            </VerticalStackLayout>
+
+            <!-- Email -->
+            <VerticalStackLayout Spacing="4">
+                <Label Style="{StaticResource SectionLabel}" Text="Email" />
+                <Border Style="{StaticResource Field}">
+                    <Entry
+                        IsSpellCheckEnabled="False"
+                        IsTextPredictionEnabled="False"
+                        Keyboard="Email"
+                        Placeholder="nom@exemple.com"
+                        ReturnType="Next"
+                        Text="{Binding Email}"
+                        VerticalOptions="Center" />
+                </Border>
+                <Label
+                    IsVisible="{Binding HasEmailError}"
+                    Style="{StaticResource Caption}"
+                    Text="{Binding EmailError}"
+                    TextColor="{StaticResource Danger}" />
+            </VerticalStackLayout>
+
+            <!-- Mot de passe -->
+            <VerticalStackLayout Spacing="4">
+                <Label Style="{StaticResource SectionLabel}" Text="Mot de passe · 8 caractères minimum" />
+                <Border Style="{StaticResource Field}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Entry
+                            IsPassword="{Binding IsPasswordHidden}"
+                            ReturnType="Next"
+                            Text="{Binding Password}"
+                            VerticalOptions="Center" />
+                        <ImageButton
+                            Grid.Column="1"
+                            Command="{Binding TogglePasswordCommand}"
+                            HeightRequest="32"
+                            Padding="4"
+                            Source="{Binding PasswordToggleIcon}"
+                            VerticalOptions="Center"
+                            WidthRequest="32" />
+                    </Grid>
+                </Border>
+                <Label
+                    IsVisible="{Binding HasPasswordError}"
+                    Style="{StaticResource Caption}"
+                    Text="{Binding PasswordError}"
+                    TextColor="{StaticResource Danger}" />
+            </VerticalStackLayout>
+
+            <!-- Confirmation -->
+            <VerticalStackLayout Spacing="4">
+                <Label Style="{StaticResource SectionLabel}" Text="Confirmer le mot de passe" />
+                <Border Style="{StaticResource Field}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Entry
+                            IsPassword="{Binding IsConfirmHidden}"
+                            ReturnCommand="{Binding RegisterCommand}"
+                            ReturnType="Done"
+                            Text="{Binding ConfirmPassword}"
+                            VerticalOptions="Center" />
+                        <ImageButton
+                            Grid.Column="1"
+                            Command="{Binding ToggleConfirmCommand}"
+                            HeightRequest="32"
+                            Padding="4"
+                            Source="{Binding ConfirmToggleIcon}"
+                            VerticalOptions="Center"
+                            WidthRequest="32" />
+                    </Grid>
+                </Border>
+                <Label
+                    IsVisible="{Binding HasConfirmError}"
+                    Style="{StaticResource Caption}"
+                    Text="{Binding ConfirmError}"
+                    TextColor="{StaticResource Danger}" />
+            </VerticalStackLayout>
+
+            <!-- Conditions générales -->
+            <VerticalStackLayout Spacing="4">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
+                    <CheckBox
+                        Color="{StaticResource Primary}"
+                        IsChecked="{Binding AcceptedTerms}"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Column="1"
+                        Style="{StaticResource Caption}"
+                        Text="J'accepte les conditions générales d'utilisation (CGU)."
+                        TextColor="{StaticResource Ink}"
+                        VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShowTermsCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                <Label
+                    IsVisible="{Binding HasTermsError}"
+                    Style="{StaticResource Caption}"
+                    Text="{Binding TermsError}"
+                    TextColor="{StaticResource Danger}" />
+            </VerticalStackLayout>
+
+            <Button Command="{Binding RegisterCommand}" Text="Créer un compte" />
+
+            <ActivityIndicator HorizontalOptions="Center" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+
+            <Label
+                FontFamily="OpenSansSemibold"
+                FontSize="13"
+                HorizontalTextAlignment="Center"
+                Text="Déjà un compte ? Se connecter"
+                TextColor="{StaticResource Primary}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToLoginCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

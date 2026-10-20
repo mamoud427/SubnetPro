@@ -1,8 +1,13 @@
 ﻿namespace SubnetPro.Helpers;
 
-/// <summary>Noms des routes Shell. Les onglets doivent correspondre aux Route de AppShell.xaml.</summary>
+/// <summary>Noms des routes Shell. Les Route de AppShell.xaml doivent correspondre à ces constantes.</summary>
 public static class Routes
 {
+    // Démarrage et authentification (hors onglets : pas de barre d'onglets)
+    public const string Splash = "splash";
+    public const string Login = "login";
+    public const string Register = "register";
+
     // Onglets
     public const string Home = "home";
     public const string Subnet = "subnet";
@@ -10,8 +15,6 @@ public static class Routes
     public const string Classe = "classe";
     public const string History = "history";
 
-    // Pages poussées (ajoutées aux jours suivants)
+    // Page poussée au-dessus des onglets
     public const string Result = "result";
-    public const string Login = "login";
-    public const string Register = "register";
 }

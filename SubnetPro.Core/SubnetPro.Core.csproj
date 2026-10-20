@@ -7,4 +7,8 @@
 		<RootNamespace>SubnetPro.Core</RootNamespace>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="sqlite-net-pcl" Version="1.11.285" />
+	</ItemGroup>
+
 </Project>
