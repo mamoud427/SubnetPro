@@ -3,33 +3,43 @@
     x:Class="SubnetPro.Views.SplashPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="{StaticResource Surface}"
+    BackgroundColor="White"
     Shell.NavBarIsVisible="False">
 
-    <Grid Padding="24" RowDefinitions="*,Auto">
+    <!-- Le logo est exactement au centre, comme dans l'écran de démarrage système (fond blanc, même logo) :
+         la transition entre les deux est invisible. -->
+    <Grid Padding="24" RowDefinitions="*,Auto,*">
 
-        <HorizontalStackLayout
+        <Image
+            Grid.Row="1"
+            HeightRequest="96"
             HorizontalOptions="Center"
-            Spacing="12"
-            VerticalOptions="Center">
-            <Image
-                HeightRequest="48"
-                Source="logo_subnetpro.png"
-                WidthRequest="48" />
-            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
-                <Label
-                    FontFamily="OpenSansSemibold"
-                    FontSize="26"
-                    Text="SubnetPro" />
-                <Label Style="{StaticResource Caption}" Text="Boîte à outils réseau hors ligne" />
-            </VerticalStackLayout>
-        </HorizontalStackLayout>
+            Source="logo_subnetpro.png"
+            WidthRequest="96" />
 
         <VerticalStackLayout
-            Grid.Row="1"
+            Grid.Row="2"
+            Margin="0,16,0,0"
+            HorizontalOptions="Center"
+            Spacing="2"
+            VerticalOptions="Start">
+            <Label
+                FontFamily="OpenSansSemibold"
+                FontSize="26"
+                HorizontalTextAlignment="Center"
+                Text="SubnetPro" />
+            <Label
+                HorizontalTextAlignment="Center"
+                Style="{StaticResource Caption}"
+                Text="Boîte à outils réseau hors ligne" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout
+            Grid.Row="2"
             Padding="0,0,0,24"
             HorizontalOptions="Center"
-            Spacing="8">
+            Spacing="8"
+            VerticalOptions="End">
             <ActivityIndicator
                 HeightRequest="24"
                 IsRunning="True"
